@@ -1,0 +1,14 @@
+# dependencies
+/node_modules
+.npmrc
+
+# production
+/build
+
+# env
+.env
+.env.dev
+.env.prod
+
+# misc
+.DS_Store
