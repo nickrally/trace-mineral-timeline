@@ -3,14 +3,14 @@ import TimelineContext from "./TimelineContext";
 import PlanningTimeline from "./PlanningTimeline";
 import { getAllItems } from "../../src/api/wsapi";
 import { useQuery } from "react-query";
-import withProject from "./withProjects";
+import withProjects from "./withProjects";
 
-export default withProject(function TimelineWithToolbar(props) {
+export default withProjects(function TimelineWithToolbar(props) {
   console.log("props", props);
   const projectsData = props.data;
   const editMode = true;
 
-  const { data, error, isLoading, isFetching, isError } = useQuery(
+  const { data, isLoading, isFetching, isError } = useQuery(
     "features",
     getAllItems
   );

@@ -4,14 +4,27 @@ import { useQuery } from "react-query";
 
 const WithProjects = (WrappedComponent, props) => {
   const getAllProjects = () => {
-    const { data, error, isLoading, isFetching, isError } = useQuery(
+    const { data, isLoading, isFetching, isError } = useQuery(
       "projects",
       getProjects
     );
 
-    return <WrappedComponent data={data} {...props} />;
+    return (
+      <div>
+        {isLoading ? (
+          "Loading..."
+        ) : isFetching ? (
+          "Fetching..."
+        ) : isError ? (
+          "Oh noes!"
+        ) : data ? (
+          <WrappedComponent data={data} {...props} />
+        ) : (
+          "no results"
+        )}
+      </div>
+    );
   };
-
   return getAllProjects;
 };
 
