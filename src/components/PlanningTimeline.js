@@ -4,7 +4,7 @@ import { workItemsToTasks } from "../utils/Format";
 
 import { Gantt } from "@mineral-community/gantt";
 
-function PlanningTimeline({ projects, workItems }) {
+function PlanningTimeline({ projects, workItems, updateFn }) {
   console.log("RENDERING PlanningTimeline...");
   let ganttApi;
   const [{ editMode }] = useContext(TimelineContext);
@@ -19,12 +19,17 @@ function PlanningTimeline({ projects, workItems }) {
 
   const handleTaskDrag = function (id, mode, e) {
     console.log("id", id);
-    console.log("editMode inside handleTaskDrag:", editMode);
-    if (editMode) {
-      const task = ganttApi.getTask(id);
-      console.log("Can edit task ok", task);
-      return false;
-    }
+    //console.log("editMode inside handleTaskDrag:", editMode);
+    //if (editMode) {
+    const task = ganttApi.getTask(id);
+    const payload = {
+      objectid: id,
+      PlannedStartDate: new Date(task.start_date).toISOString().split("T")[0],
+    };
+    updateFn(payload);
+    console.log("Can edit task ok", task);
+    return false;
+    //}
   };
 
   const actions = {

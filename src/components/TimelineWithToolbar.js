@@ -1,7 +1,7 @@
 import React from "react";
 import TimelineContextProvider from "./TimelineContext";
 import PlanningTimeline from "./PlanningTimeline";
-import { getAllItems } from "../../src/api/wsapi";
+import { getAllItems, updateItem } from "../../src/api/wsapi";
 import { useQuery } from "react-query";
 import withProjects from "./withProjects";
 import Toolbar from "./Toolbar";
@@ -17,6 +17,7 @@ export default withProjects(function TimelineWithToolbar(props) {
   const planningTimelineProps = {
     projects: projectsData,
     workItems: data,
+    updateFn: updateItem,
   };
 
   return (
