@@ -1,12 +1,15 @@
-import React from "react";
-import { useTimelineContext } from "./TimelineContext";
+import React, { useContext } from "react";
+import { TimelineContext } from "./TimelineContext";
 
 function Toolbar() {
-  const { editMode } = useTimelineContext();
-  const buttonText = editMode ? "can write" : "cannot write";
+  const [state, dispatch] = useContext(TimelineContext);
+  const buttonText = state.editMode ? "can write" : "cannot write";
+  const handleClick = () => {
+    dispatch({ type: "TOGGLE_MODE" });
+  };
   return (
     <div>
-      <button>{buttonText}</button>
+      <button onClick={handleClick}>{buttonText}</button>
     </div>
   );
 }

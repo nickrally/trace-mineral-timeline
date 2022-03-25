@@ -1,12 +1,13 @@
-import React from "react";
-import { useTimelineContext } from "./TimelineContext";
+import React, { useContext } from "react";
+import { TimelineContext } from "./TimelineContext";
 import { workItemsToTasks } from "../utils/Format";
 
 import { Gantt } from "@mineral-community/gantt";
 
 function PlanningTimeline({ projects, workItems }) {
+  console.log("RENDRING PLANNING TIMELINE");
   let ganttApi;
-  const { editMode } = useTimelineContext();
+  const [{ editMode }] = useContext(TimelineContext);
 
   const handleTaskClick = function (id, mode, e) {
     const task = ganttApi.getTask(id);
@@ -17,11 +18,9 @@ function PlanningTimeline({ projects, workItems }) {
   const handleTaskDrag = function (id, mode, e) {
     if (editMode) {
       const task = ganttApi.getTask(id);
-      console.log("task", task);
-    } else {
-      console.log("Can't edit!");
+      console.log("Can edit task ok", task);
+      return true;
     }
-    return false;
   };
 
   const actions = {
