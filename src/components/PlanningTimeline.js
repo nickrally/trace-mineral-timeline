@@ -5,9 +5,10 @@ import { workItemsToTasks } from "../utils/Format";
 import { Gantt } from "@mineral-community/gantt";
 
 function PlanningTimeline({ projects, workItems }) {
-  console.log("RENDRING PLANNING TIMELINE");
+  console.log("RENDERING PlanningTimeline...");
   let ganttApi;
   const [{ editMode }] = useContext(TimelineContext);
+  console.log("editMode:", editMode);
 
   const handleTaskClick = function (id, mode, e) {
     const task = ganttApi.getTask(id);

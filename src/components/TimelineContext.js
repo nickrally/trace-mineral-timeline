@@ -1,7 +1,6 @@
-import React, { createContext, useContext, useReducer } from "react";
+import React, { createContext, useReducer } from "react";
 
 export const TimelineContext = createContext();
-export const useTimelineContext = () => useContext(TimelineContext);
 
 const initState = {
   editMode: false,
