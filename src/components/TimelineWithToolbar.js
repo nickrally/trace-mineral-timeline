@@ -7,7 +7,6 @@ import withProjects from "./withProjects";
 import Toolbar from "./Toolbar";
 
 export default withProjects(function TimelineWithToolbar(props) {
-  console.log("props", props);
   const projectsData = props.data;
 
   const { data, isLoading, isFetching, isError } = useQuery(
