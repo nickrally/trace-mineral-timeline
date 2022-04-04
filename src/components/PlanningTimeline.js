@@ -1,48 +1,62 @@
-import React, { useContext } from "react";
+import React, { useContext, useRef } from "react";
 import { TimelineContext } from "./TimelineContext";
 import { workItemsToTasks } from "../utils/Format";
 
 import { Gantt } from "@mineral-community/gantt";
 
-function PlanningTimeline({ projects, workItems, updateFn }) {
-  console.log("RENDERING PlanningTimeline...");
-  let ganttApi;
-  const [{ editMode }] = useContext(TimelineContext);
-
-  console.log("editMode:", editMode);
-
-  const handleTaskClick = function (id, mode, e) {
-    const task = ganttApi.getTask(id);
-    console.log("task progress", task.progress);
-    return false;
+function PlanningTimeline({ workItems, updateFn }) {
+  let { current: ganttApi } = useRef();
+  const setGanttApi = (api) => {
+    ganttApi = api;
   };
 
+  const { state } = useContext(TimelineContext);
+  const editMode = state.editMode;
+
+  console.log("RENDERING PlanningTimeline...editMode:", editMode);
+
   const handleTaskDrag = function (id, mode, e) {
-    console.log("id", id);
-    //console.log("editMode inside handleTaskDrag:", editMode);
-    //if (editMode) {
-    const task = ganttApi.getTask(id);
-    const payload = {
-      objectid: id,
-      PlannedStartDate: new Date(task.start_date).toISOString().split("T")[0],
-    };
-    updateFn(payload);
-    console.log("Can edit task ok", task);
-    return false;
-    //}
+    console.log("editMode inside handleTaskDrag:", editMode);
+    if (editMode) {
+      const task = ganttApi.getTask(id);
+      const payload = {
+        objectid: id,
+        PlannedStartDate: new Date(task.start_date).toISOString().split("T")[0],
+      };
+      updateFn(payload);
+      return true;
+    }
   };
 
   const actions = {
     onAfterTaskDrag: handleTaskDrag,
-    onTaskClick: handleTaskClick,
   };
 
-  //console.log("projects", projects);
   const res = workItems["QueryResult"]["Results"];
   const tasks = workItemsToTasks(res);
 
   const config = {
-    date_format: "%Y-%m-%d", //important! date_format, dateFormat did not work
+    datagrid: {
+      columns: [
+        {
+          name: "text",
+          label: " ",
+          tree: true,
+          width: "*",
+        },
+        {
+          align: "left",
+          label: "Progress",
+          name: "progress",
+          width: 120,
+        },
+      ],
+    },
+    date_format: "%Y-%m-%d",
+    end_date: "2022-09-01",
+    grid_elastic_columns: true,
+    readonly: !editMode,
+    start_date: "2022-03-01",
   };
 
   return (
@@ -50,7 +64,7 @@ function PlanningTimeline({ projects, workItems, updateFn }) {
       data={{ tasks: tasks }}
       config={config}
       actions={actions}
-      getGanttApi={(api) => (ganttApi = api)}
+      getGanttApi={setGanttApi}
     />
   );
 }
