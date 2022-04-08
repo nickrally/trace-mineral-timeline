@@ -14,7 +14,7 @@ function PlanningTimeline({ workItems, updateFn }) {
   const editMode = state.editMode;
 
   console.log("RENDERING PlanningTimeline...editMode:", editMode);
-
+  const randomValue = Math.random();
   const handleTaskDrag = function (id, mode, e) {
     console.log("editMode inside handleTaskDrag:", editMode);
     if (editMode) {
@@ -26,6 +26,7 @@ function PlanningTimeline({ workItems, updateFn }) {
       updateFn(payload);
       return true;
     }
+    console.log("whatever", randomValue);
   };
 
   const actions = {
