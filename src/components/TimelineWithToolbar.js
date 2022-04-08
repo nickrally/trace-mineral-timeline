@@ -2,10 +2,12 @@ import React from "react";
 import TimelineContextProvider from "./TimelineContext";
 import PlanningTimeline from "./PlanningTimeline";
 import { getAllItems, updateItem } from "../../src/api/wsapi";
+import WithProjects from "./withProjects";
 import { useQuery } from "react-query";
 import Toolbar from "./Toolbar";
 
-export default function TimelineWithToolbar() {
+export default WithProjects(function TimelineWithToolbar(props) {
+  console.log("Projects", props);
   const { data, isLoading, isFetching, isError } = useQuery(
     "features",
     getAllItems
@@ -34,4 +36,4 @@ export default function TimelineWithToolbar() {
       )}
     </div>
   );
-}
+});
