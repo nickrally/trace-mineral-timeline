@@ -9,7 +9,6 @@ import Toolbar from "./Toolbar";
 export default WithProjects(function TimelineWithToolbar({
   data: projectData,
 }) {
-  //console.log("Projects", data?.QueryResult.Results);
   const [selectedProject, setSelectedProject] = useState({
     name: "SampleProject",
     _ref: "/project/48689019574",
@@ -25,14 +24,14 @@ export default WithProjects(function TimelineWithToolbar({
   );
 
   const onProjectChange = (e) => {
-    const proj = projects.find((project) => project._ref === e.target.value);
-    setSelectedProject({ name: proj.name, _ref: proj._ref });
-    console.log("selectedProject", selectedProject);
+    const proj = projects.find((project) => project.name === e.target.value);
+    setSelectedProject({ ...selectedProject, ...proj });
   };
 
   const planningTimelineProps = {
     workItems: data,
     updateFn: updateItem,
+    selectedProject: selectedProject,
   };
 
   return (
@@ -48,7 +47,7 @@ export default WithProjects(function TimelineWithToolbar({
           <Toolbar
             options={projects}
             onOptionChange={onProjectChange}
-            onFirstLoad={setSelectedProject}
+            selectedProject={selectedProject}
           />
           <PlanningTimeline {...planningTimelineProps} />
         </TimelineContextProvider>

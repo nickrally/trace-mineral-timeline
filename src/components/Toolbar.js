@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { TimelineContext } from "./TimelineContext";
 import Dropdown from "./Dropdown";
 
-function Toolbar({ options, onOptionChange, onFirstLoad }) {
+function Toolbar({ options, onOptionChange, selectedProject }) {
   const { state, dispatch } = useContext(TimelineContext);
   const buttonText = state.editMode ? "Click to read only" : "Click to edit";
   const modeText = state.editMode
@@ -16,7 +16,7 @@ function Toolbar({ options, onOptionChange, onFirstLoad }) {
       <Dropdown
         options={options}
         onOptionChange={onOptionChange}
-        onFirstLoad={onFirstLoad}
+        selectedProject={selectedProject}
       />
       <div>
         <p>{modeText}</p>

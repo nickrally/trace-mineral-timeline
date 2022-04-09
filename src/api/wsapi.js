@@ -61,6 +61,8 @@ export const getItem = async ({ queryKey }) => {
 };
 
 export const updateItem = async ({ objectid, ...payload }) => {
+  console.log("objectid", objectid);
+  console.log("payload", payload);
   const itemUrl = `${wsapiUrl}/${type}/${objectid}`;
   await axios.post(
     itemUrl,
