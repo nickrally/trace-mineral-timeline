@@ -1,10 +1,13 @@
 import React, { useContext, useRef } from "react";
 import { TimelineContext } from "./TimelineContext";
 import { workItemsToTasks } from "../utils/Format";
+import { useQuery, useMutation, useQueryClient } from "react-query";
 
 import { Gantt } from "@mineral-community/gantt";
 
 function PlanningTimeline({ workItems, updateFn }) {
+  const queryClient = useQueryClient();
+  const { mutateAsync } = useMutation(updateFn);
   let { current: ganttApi } = useRef();
   const setGanttApi = (api) => {
     ganttApi = api;
@@ -23,7 +26,8 @@ function PlanningTimeline({ workItems, updateFn }) {
         objectid: id,
         PlannedStartDate: new Date(task.start_date).toISOString().split("T")[0],
       };
-      updateFn(payload);
+      mutateAsync(payload);
+      queryClient.invalidateQueries("features");
       return true;
     }
     console.log("whatever", randomValue);

@@ -1,7 +1,8 @@
 import React, { useContext } from "react";
 import { TimelineContext } from "./TimelineContext";
+import Dropdown from "./Dropdown";
 
-function Toolbar() {
+function Toolbar({ options, onOptionChange, onFirstLoad }) {
   const { state, dispatch } = useContext(TimelineContext);
   const buttonText = state.editMode ? "Click to read only" : "Click to edit";
   const modeText = state.editMode
@@ -11,10 +12,17 @@ function Toolbar() {
     dispatch({ type: "TOGGLE" });
   };
   return (
-    <div>
-      <p>{modeText}</p>
-      <button onClick={handleClick}>{buttonText}</button>
-    </div>
+    <>
+      <Dropdown
+        options={options}
+        onOptionChange={onOptionChange}
+        onFirstLoad={onFirstLoad}
+      />
+      <div>
+        <p>{modeText}</p>
+        <button onClick={handleClick}>{buttonText}</button>
+      </div>
+    </>
   );
 }
 

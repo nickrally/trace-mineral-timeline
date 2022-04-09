@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import TimelineContextProvider from "./TimelineContext";
 import PlanningTimeline from "./PlanningTimeline";
 import { getAllItems, updateItem } from "../../src/api/wsapi";
@@ -6,12 +6,29 @@ import WithProjects from "./withProjects";
 import { useQuery } from "react-query";
 import Toolbar from "./Toolbar";
 
-export default WithProjects(function TimelineWithToolbar(props) {
-  console.log("Projects", props);
+export default WithProjects(function TimelineWithToolbar({
+  data: projectData,
+}) {
+  //console.log("Projects", data?.QueryResult.Results);
+  const [selectedProject, setSelectedProject] = useState({
+    name: "SampleProject",
+    _ref: "/project/48689019574",
+  });
+  const projects = projectData?.QueryResult.Results.map((project) => ({
+    name: project.Name,
+    _ref: project._ref.split("/v2.0")[1],
+  }));
+
   const { data, isLoading, isFetching, isError } = useQuery(
-    "features",
+    ["features", selectedProject._ref],
     getAllItems
   );
+
+  const onProjectChange = (e) => {
+    const proj = projects.find((project) => project._ref === e.target.value);
+    setSelectedProject({ name: proj.name, _ref: proj._ref });
+    console.log("selectedProject", selectedProject);
+  };
 
   const planningTimelineProps = {
     workItems: data,
@@ -28,7 +45,11 @@ export default WithProjects(function TimelineWithToolbar(props) {
         "Oh noes!"
       ) : data ? (
         <TimelineContextProvider>
-          <Toolbar />
+          <Toolbar
+            options={projects}
+            onOptionChange={onProjectChange}
+            onFirstLoad={setSelectedProject}
+          />
           <PlanningTimeline {...planningTimelineProps} />
         </TimelineContextProvider>
       ) : (

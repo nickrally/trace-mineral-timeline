@@ -7,7 +7,7 @@ const headers = {
 };
 
 const workspace = "48689019490"; //"NM NY"
-const project = "48689019574"; //"Sample Project"
+//const project = "48689019574"; //"Sample Project"
 const wsapiUrl = "https://rally1.rallydev.com/slm/webservice/v2.0";
 //https://rally1.rallydev.com/slm/webservice/v2.0/workspace/48689019490/projects
 const projectsUrl = `${wsapiUrl}/workspace/${workspace}/projects`;
@@ -29,9 +29,11 @@ const shortType = type.split("/")[1];
 const url = `${wsapiUrl}/${type}`;
 
 export const getAllItems = async ({ queryKey }) => {
+  const [_key, _ref] = queryKey;
+  console.log("project", _ref);
   const params = {
     workspace: `/workspace/${workspace}`,
-    query: `(Project.ObjectID = ${project})`,
+    query: `(Project = ${_ref})`,
     fetch:
       "ObjectID,Name,PlannedStartDate,PlannedEndDate,Project,FormattedID,PercentDoneByStoryPlanEstimate",
   };
