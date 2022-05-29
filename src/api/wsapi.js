@@ -6,8 +6,8 @@ const headers = {
   "Content-Type": "application/json",
 };
 
-const workspace = "48689019490"; //"NM NY"
-const project = "48689019574"; //"Sample Project"
+const workspace = "12352608129"; //"NMDS"
+const project = "16662089077"; //"a project 0"
 const wsapiUrl = "https://rally1.rallydev.com/slm/webservice/v2.0";
 //https://rally1.rallydev.com/slm/webservice/v2.0/workspace/48689019490/projects
 const projectsUrl = `${wsapiUrl}/workspace/${workspace}/projects`;
