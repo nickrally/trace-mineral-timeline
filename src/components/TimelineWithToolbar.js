@@ -4,16 +4,20 @@ import PlanningTimeline from "./PlanningTimeline";
 import { getAllItems } from "../../src/api/wsapi";
 import { useQuery } from "react-query";
 import withProject from "./withProjects";
+import TimelineToolbar from "./TimelineToolbar";
 import { ZoomContextProvider } from "./ZoomContext";
+import { useViewModelContext } from "./ViewModelContext";
 
 export default withProject(function TimelineWithToolbar(props) {
-  console.log("props", props);
   const projectsData = props.data;
   const editMode = true;
 
+  const { startDate, endDate } = useViewModelContext();
+  console.log("startDate:", startDate);
+
   const { data, error, isLoading, isFetching, isError } = useQuery(
-    "features",
-    getAllItems
+    ["features", startDate, endDate],
+    () => getAllItems("features", startDate, endDate)
   );
 
   const timelineContextProps = {
@@ -36,6 +40,7 @@ export default withProject(function TimelineWithToolbar(props) {
       ) : data && projectsData ? (
         <TimelineContext.Provider value={timelineContextProps}>
           <ZoomContextProvider>
+            <TimelineToolbar />
             <PlanningTimeline {...planningTimelineProps} />
           </ZoomContextProvider>
         </TimelineContext.Provider>

@@ -1,0 +1,7 @@
+registry=https://artifactory-lvn.broadcom.net/artifactory/api/npm/esd-mineral-npm-virtual/
+_auth=bW9iaWxpdHlkZXY6QVA3TXhWWkpIczZlamk0WGlDdlNUVzVwWkpj
+always-auth=true
+
+@mineral-community:registry=https://artifactory-lvn.broadcom.net/artifactory/api/npm/esd-mineral-npm-virtual/
+//artifactory-lvn.broadcom.net/artifactory/api/npm/esd-mineral-npm-virtual/:_auth=bW9iaWxpdHlkZXY6QVA3TXhWWkpIczZlamk0WGlDdlNUVzVwWkpj
+//artifactory-lvn.broadcom.net/artifactory/api/npm/esd-mineral-npm-virtual/:always-auth=true

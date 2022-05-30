@@ -2,12 +2,15 @@ import React, { useState, useEffect, useMemo } from "react";
 import { useTimelineContext } from "./TimelineContext";
 import { workItemsToTasks } from "../utils/Format";
 import { useZoomContext } from "./ZoomContext";
+import { useViewModelContext } from "./ViewModelContext";
 
 import { Gantt, useGanttApiRef } from "@mineral-community/gantt";
 
+import "./PlanningTimeline.css";
+
 function PlanningTimeline({ projects, workItems }) {
+  console.log("loaded PlanningTimeline");
   const ganttApiRef = useGanttApiRef();
-  const [currentZoom, setCurrentZoom] = useState("Days");
 
   const {
     getZoomMinMaxLevel,
@@ -17,13 +20,13 @@ function PlanningTimeline({ projects, workItems }) {
     zoomLevel,
   } = useZoomContext();
 
+  const { selectedEnd, selectedStart } = useViewModelContext();
+
   useEffect(() => {
     ganttApiRef.current.setZoomLevel(zoomLevel);
   }, [ganttApiRef, zoomLevel]);
 
   useEffect(() => {
-    const selectedStart = "05/01/2022";
-    const selectedEnd = "12/31/2022";
     const [minLevel, maxLevel] = getZoomMinMaxLevel(
       new Date(selectedStart),
       new Date(selectedEnd)
@@ -31,17 +34,6 @@ function PlanningTimeline({ projects, workItems }) {
     setZoomLevelLimits({ maxLevel, minLevel });
     setZoomLevel(minLevel);
   }, [getZoomMinMaxLevel, setZoomLevel, setZoomLevelLimits]);
-
-  /* useEffect(() => {
-    console.log(
-      "ganttApiRef?.current.gantt.config",
-      ganttApiRef?.current.gantt.config
-    );
-    console.log(
-      "duration_unit",
-      ganttApiRef?.current.gantt.config.duration_unit
-    );
-  }, []); */
 
   const { editMode } = useTimelineContext();
 
@@ -55,7 +47,6 @@ function PlanningTimeline({ projects, workItems }) {
     const handleTaskDrag = function (id, mode, e) {
       if (editMode) {
         const task = ganttApi.getTask(id);
-        console.log("task", task);
       } else {
         console.log("Can't edit!");
       }
@@ -70,7 +61,6 @@ function PlanningTimeline({ projects, workItems }) {
     };
   }, []);
 
-  console.log("projects", projects);
   const res = workItems["QueryResult"]["Results"];
   const tasks = workItemsToTasks(res);
 
@@ -86,7 +76,6 @@ function PlanningTimeline({ projects, workItems }) {
       config={config}
       actions={actions}
       apiRef={ganttApiRef}
-      zoom={currentZoom}
     />
   );
 }
