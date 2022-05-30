@@ -4,6 +4,7 @@ import PlanningTimeline from "./PlanningTimeline";
 import { getAllItems } from "../../src/api/wsapi";
 import { useQuery } from "react-query";
 import withProject from "./withProjects";
+import { ZoomContextProvider } from "./ZoomContext";
 
 export default withProject(function TimelineWithToolbar(props) {
   console.log("props", props);
@@ -34,7 +35,9 @@ export default withProject(function TimelineWithToolbar(props) {
         "Oh noes!"
       ) : data && projectsData ? (
         <TimelineContext.Provider value={timelineContextProps}>
-          <PlanningTimeline {...planningTimelineProps} />
+          <ZoomContextProvider>
+            <PlanningTimeline {...planningTimelineProps} />
+          </ZoomContextProvider>
         </TimelineContext.Provider>
       ) : (
         "no results"
