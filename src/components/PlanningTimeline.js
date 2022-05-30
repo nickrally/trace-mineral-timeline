@@ -1,11 +1,23 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useTimelineContext } from "./TimelineContext";
 import { workItemsToTasks } from "../utils/Format";
 
-import { Gantt } from "@mineral-community/gantt";
+import { Gantt, useGanttApiRef } from "@mineral-community/gantt";
 
 function PlanningTimeline({ projects, workItems }) {
-  let ganttApi;
+  const ganttApiRef = useGanttApiRef();
+
+  useEffect(() => {
+    console.log(
+      "ganttApiRef?.current.gantt.config",
+      ganttApiRef?.current.gantt.config
+    );
+    console.log(
+      "duration_unit",
+      ganttApiRef?.current.gantt.config.duration_unit
+    );
+  }, []);
+
   const { editMode } = useTimelineContext();
 
   const handleTaskClick = function (id, mode, e) {
@@ -35,6 +47,7 @@ function PlanningTimeline({ projects, workItems }) {
 
   const config = {
     date_format: "%Y-%m-%d", //important! date_format, dateFormat did not work
+    duration_unit: "day",
   };
 
   return (
@@ -42,7 +55,7 @@ function PlanningTimeline({ projects, workItems }) {
       data={{ tasks: tasks }}
       config={config}
       actions={actions}
-      getGanttApi={(api) => (ganttApi = api)}
+      apiRef={ganttApiRef}
     />
   );
 }
