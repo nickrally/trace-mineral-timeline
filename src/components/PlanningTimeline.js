@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useEffect, useMemo } from "react";
 import { useTimelineContext } from "./TimelineContext";
 import { workItemsToTasks } from "../utils/Format";
 import { useZoomContext } from "./ZoomContext";
@@ -9,7 +9,6 @@ import { Gantt, useGanttApiRef } from "@mineral-community/gantt";
 import "./PlanningTimeline.css";
 
 function PlanningTimeline({ projects, workItems }) {
-  console.log("loaded PlanningTimeline");
   const ganttApiRef = useGanttApiRef();
 
   const {

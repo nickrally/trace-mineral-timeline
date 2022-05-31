@@ -7,6 +7,7 @@ const TimelineToolbar = () => {
   const { updateEndDate, updateStartDate, endDate, startDate } =
     useViewModelContext();
 
+  //must use moment to convert date to ISOString:
   const endDatePickerProps = {
     onChange: (date) => {
       updateEndDate(moment(date).toISOString());

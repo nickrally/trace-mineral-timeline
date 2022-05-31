@@ -32,7 +32,6 @@ export const getAllItems = async (queryKey, startDate, endDate) => {
   /*
   (((PlannedStartDate >= 2022-04-01) AND (PlannedEndDate <= 2022-12-31)) AND (Project.ObjectID = 16662089077))
   */
-  console.log("startDate in getAllItems:", startDate);
   const params = {
     workspace: `/workspace/${workspace}`,
     query: `(((PlannedStartDate >= ${startDate}) AND (PlannedEndDate <= ${endDate})) AND (Project.ObjectID = ${project}))`,

@@ -13,7 +13,6 @@ export default withProject(function TimelineWithToolbar(props) {
   const editMode = true;
 
   const { startDate, endDate } = useViewModelContext();
-  console.log("startDate:", startDate);
 
   const { data, error, isLoading, isFetching, isError } = useQuery(
     ["features", startDate, endDate],
