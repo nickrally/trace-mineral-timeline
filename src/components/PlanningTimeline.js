@@ -19,7 +19,7 @@ function PlanningTimeline({ projects, workItems }) {
     zoomLevel,
   } = useZoomContext();
 
-  const { selectedEnd, selectedStart } = useViewModelContext();
+  const { startDate, endDate } = useViewModelContext();
 
   useEffect(() => {
     ganttApiRef.current.setZoomLevel(zoomLevel);
@@ -27,9 +27,10 @@ function PlanningTimeline({ projects, workItems }) {
 
   useEffect(() => {
     const [minLevel, maxLevel] = getZoomMinMaxLevel(
-      new Date(selectedStart),
-      new Date(selectedEnd)
+      new Date(startDate),
+      new Date(endDate)
     );
+
     setZoomLevelLimits({ maxLevel, minLevel });
     setZoomLevel(minLevel);
   }, [getZoomMinMaxLevel, setZoomLevel, setZoomLevelLimits]);
