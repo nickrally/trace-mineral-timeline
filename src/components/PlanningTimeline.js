@@ -6,15 +6,16 @@ import { useViewModelContext } from "./ViewModelContext";
 
 import { Gantt, useGanttApiRef } from "@mineral-community/gantt";
 
-import { useMutation, QueryClient } from "react-query";
+import { useMutation, QueryClient, useQueryClient } from "react-query";
 import { updateItem } from "../api/wsapi";
 import "./PlanningTimeline.css";
 import moment from "moment";
 
-const queryClient = new QueryClient();
+//const queryClient = new QueryClient();
 
 function PlanningTimeline({ projects, workItems }) {
   const ganttApiRef = useGanttApiRef();
+  const queryClient = useQueryClient();
   const { mutateAsync } = useMutation(updateItem);
 
   const {
@@ -60,7 +61,7 @@ function PlanningTimeline({ projects, workItems }) {
           plannedstartdate: moment(task.start_date).toISOString(),
           plannedenddate: moment(task.end_date).toISOString(),
         });
-        queryClient.invalidateQueries(["features"]);
+        queryClient.invalidateQueries(["features", startDate, endDate]);
       } else {
         console.log("Can't edit!");
       }
