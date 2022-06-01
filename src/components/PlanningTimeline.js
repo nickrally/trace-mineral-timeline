@@ -6,10 +6,16 @@ import { useViewModelContext } from "./ViewModelContext";
 
 import { Gantt, useGanttApiRef } from "@mineral-community/gantt";
 
+import { useMutation, QueryClient } from "react-query";
+import { updateItem } from "../api/wsapi";
 import "./PlanningTimeline.css";
+import moment from "moment";
+
+const queryClient = new QueryClient();
 
 function PlanningTimeline({ projects, workItems }) {
   const ganttApiRef = useGanttApiRef();
+  const { mutateAsync } = useMutation(updateItem);
 
   const {
     getZoomMinMaxLevel,
@@ -36,17 +42,25 @@ function PlanningTimeline({ projects, workItems }) {
   }, [getZoomMinMaxLevel, setZoomLevel, setZoomLevelLimits]);
 
   const { editMode } = useTimelineContext();
+  //console.log("editMode", editMode); //true
 
   const actions = useMemo(() => {
     const handleTaskClick = function (id, mode, e) {
-      const task = ganttApi.getTask(id);
-      console.log("task progress", task.progress);
+      const task = ganttApiRef.current.getTask(id);
+      console.log("task", task);
       return false;
     };
 
-    const handleTaskDrag = function (id, mode, e) {
+    const handleTaskDrag = async function (id, mode, e) {
       if (editMode) {
-        const task = ganttApi.getTask(id);
+        const task = ganttApiRef.current.getTask(id);
+        console.log("task", task);
+        await mutateAsync({
+          objectid: task.id,
+          plannedstartdate: moment(task.start_date).toISOString(),
+          plannedenddate: moment(task.end_date).toISOString(),
+        });
+        queryClient.invalidateQueries(["features"]);
       } else {
         console.log("Can't edit!");
       }
