@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import TimelineContext from "./TimelineContext";
 import PlanningTimeline from "./PlanningTimeline";
 import { getAllItems } from "../../src/api/wsapi";
@@ -28,6 +28,10 @@ export default withProject(function TimelineWithToolbar(props) {
     workItems: data,
   };
 
+  useEffect(() => {
+    console.log("PlanningTimeline mounted");
+    return () => console.log("Planning timeline unmounted");
+  }, []);
   return (
     <div>
       {isLoading ? (
